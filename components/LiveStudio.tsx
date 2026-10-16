@@ -32,12 +32,12 @@ export function LiveStudio() {
   const [previewDevice, setPreviewDevice] = useState<'mobile' | 'desktop'>('mobile');
 
   const colorTones = [
-    { name: 'Sage Green', color: '#3F5643' },
-    { name: 'Royal Gold', color: '#C29B38' },
-    { name: 'Dusty Rose', color: '#884D58' },
-    { name: 'Midnight Azure', color: '#1E293B' },
-    { name: 'Javanese Bronze', color: '#C69214' },
-    { name: 'Minimalist Black', color: '#18181B' },
+    { name: 'Royal Sapphire', color: '#2563EB' },
+    { name: 'Baby Sky Blue', color: '#38BDF8' },
+    { name: 'Deep Navy', color: '#1E3A8A' },
+    { name: 'Champagne Gold', color: '#C29B38' },
+    { name: 'Soft Rose', color: '#F43F5E' },
+    { name: 'Minimalist Slate', color: '#334155' },
   ];
 
   const presets = [
@@ -121,25 +121,25 @@ export function LiveStudio() {
   const brideInitial = customization.brideNickname?.charAt(0) || 'B';
 
   return (
-    <section className="w-full min-h-[calc(100vh-4.5rem)] bg-[#F7F4EE] py-8 px-4 sm:px-6">
+    <section className="w-full min-h-[calc(100vh-4.5rem)] bg-[#F0F7FD] py-8 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
         {/* Top Studio Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-[#E7E2DA]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-[#D4E5F5]">
           <div>
-            <div className="flex items-center gap-2 text-xs font-sans-body uppercase tracking-widest text-[#8C7A58] font-semibold">
-              <Sparkles className="w-4 h-4 text-[#C29B38]" />
+            <div className="flex items-center gap-2 text-xs font-sans-body uppercase tracking-widest text-[#2563EB] font-semibold">
+              <Sparkles className="w-4 h-4 text-[#38BDF8]" />
               <span>Interactive Customizer Studio</span>
             </div>
-            <h1 className="text-xl sm:text-2xl font-serif-display text-[#1E2923]">
-              Kustomisasi Undangan & Live Preview Instan
+            <h1 className="text-xl sm:text-2xl font-serif-display text-[#0F172A]">
+              Kustomisasi Undangan &amp; Live Preview Instan
             </h1>
           </div>
 
           {/* Quick template selector badge & price */}
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg border border-[#E7E2DA] text-xs">
+            <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg border border-[#D4E5F5] text-xs">
               <span className="text-stone-500 font-sans-body">Template:</span>
-              <span className="font-semibold text-[#2D4030] font-sans-body">
+              <span className="font-semibold text-[#1E3A8A] font-sans-body">
                 {selectedTemplate.name}
               </span>
               <span className="font-mono-numbers text-stone-700 font-bold ml-1">
@@ -149,7 +149,7 @@ export function LiveStudio() {
 
             <button
               onClick={() => setActiveTab('checkout')}
-              className="bg-[#2D4030] text-white px-4 py-2 rounded-lg text-xs font-sans-body font-semibold hover:bg-[#3F5643] transition-colors flex items-center gap-2 shadow-sm whitespace-nowrap"
+              className="bg-[#2563EB] text-white px-4 py-2 rounded-lg text-xs font-sans-body font-semibold hover:bg-[#1D4ED8] transition-colors flex items-center gap-2 shadow-sm whitespace-nowrap"
             >
               <span>Lanjut Bayar</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -162,7 +162,7 @@ export function LiveStudio() {
           {/* LEFT COLUMN: Configuration Controls & Inputs */}
           <div className="lg:col-span-5 flex flex-col gap-5">
             {/* Quick Template Switcher Chips */}
-            <div className="bg-white p-4 rounded-xl border border-[#E7E2DA] shadow-sm">
+            <div className="bg-white p-4 rounded-xl border border-[#D4E5F5] shadow-sm">
               <div className="flex items-center justify-between mb-2.5">
                 <span className="text-xs font-semibold text-stone-700 uppercase tracking-wider font-sans-body">
                   Ganti Template Desain
@@ -178,8 +178,8 @@ export function LiveStudio() {
                     onClick={() => selectTemplateForCustomizing(tmpl)}
                     className={`p-2 rounded-lg text-left border transition-all text-xs flex flex-col justify-between ${
                       selectedTemplate.id === tmpl.id
-                        ? 'border-[#2D4030] bg-[#FAF8F5] ring-1 ring-[#2D4030]'
-                        : 'border-[#E7E2DA] hover:border-stone-400 bg-white'
+                        ? 'border-[#2563EB] bg-[#EFF6FF] ring-1 ring-[#2563EB]'
+                        : 'border-[#D4E5F5] hover:border-stone-400 bg-white'
                     }`}
                   >
                     <span className="font-medium text-stone-800 truncate">{tmpl.name}</span>
@@ -192,7 +192,7 @@ export function LiveStudio() {
             </div>
 
             {/* Presets Bar */}
-            <div className="bg-white p-4 rounded-xl border border-[#E7E2DA] shadow-sm">
+            <div className="bg-white p-4 rounded-xl border border-[#D4E5F5] shadow-sm">
               <div className="text-xs font-semibold text-stone-700 uppercase tracking-wider mb-2 font-sans-body">
                 Gunakan Contoh Cepat (Preset)
               </div>
@@ -201,7 +201,7 @@ export function LiveStudio() {
                   <button
                     key={idx}
                     onClick={() => applyPreset(p)}
-                    className="text-xs px-2.5 py-1.5 rounded bg-[#F2ECE1] text-stone-700 hover:bg-[#EAE2D4] transition-colors font-sans-body"
+                    className="text-xs px-2.5 py-1.5 rounded bg-[#F0F7FD] text-[#1E3A8A] hover:bg-[#E0F2FE] border border-[#D4E5F5] transition-colors font-sans-body"
                   >
                     {p.label}
                   </button>
@@ -210,13 +210,13 @@ export function LiveStudio() {
             </div>
 
             {/* Input Form Tabs */}
-            <div className="bg-white rounded-xl border border-[#E7E2DA] shadow-sm overflow-hidden">
-              <div className="flex border-b border-[#E7E2DA] bg-[#FAF8F5]">
+            <div className="bg-white rounded-xl border border-[#D4E5F5] shadow-sm overflow-hidden">
+              <div className="flex border-b border-[#D4E5F5] bg-[#F8FAFC]">
                 <button
                   onClick={() => setActiveFormTab('mempelai')}
                   className={`flex-1 py-3 text-xs font-semibold font-sans-body transition-colors border-b-2 ${
                     activeFormTab === 'mempelai'
-                      ? 'border-[#2D4030] text-[#2D4030] bg-white'
+                      ? 'border-[#2563EB] text-[#1E3A8A] bg-white'
                       : 'border-transparent text-stone-500 hover:text-stone-800'
                   }`}
                 >
@@ -226,21 +226,21 @@ export function LiveStudio() {
                   onClick={() => setActiveFormTab('acara')}
                   className={`flex-1 py-3 text-xs font-semibold font-sans-body transition-colors border-b-2 ${
                     activeFormTab === 'acara'
-                      ? 'border-[#2D4030] text-[#2D4030] bg-white'
+                      ? 'border-[#2563EB] text-[#1E3A8A] bg-white'
                       : 'border-transparent text-stone-500 hover:text-stone-800'
                   }`}
                 >
-                  2. Jadwal & Lokasi
+                  2. Jadwal &amp; Lokasi
                 </button>
                 <button
                   onClick={() => setActiveFormTab('kutipan')}
                   className={`flex-1 py-3 text-xs font-semibold font-sans-body transition-colors border-b-2 ${
                     activeFormTab === 'kutipan'
-                      ? 'border-[#2D4030] text-[#2D4030] bg-white'
+                      ? 'border-[#2563EB] text-[#1E3A8A] bg-white'
                       : 'border-transparent text-stone-500 hover:text-stone-800'
                   }`}
                 >
-                  3. Kutipan & Tema
+                  3. Kutipan &amp; Tema
                 </button>
               </div>
 
@@ -492,21 +492,21 @@ export function LiveStudio() {
             </div>
 
             {/* Bottom Checkout CTA Card */}
-            <div className="bg-[#2D4030] text-white p-5 rounded-xl shadow-md flex items-center justify-between">
+            <div className="bg-[#1E3A8A] text-white p-5 rounded-xl shadow-md flex items-center justify-between">
               <div>
-                <span className="text-[11px] uppercase tracking-wider text-stone-300 font-sans-body">
+                <span className="text-[11px] uppercase tracking-wider text-blue-200 font-sans-body">
                   Total Biaya Undangan
                 </span>
-                <p className="font-mono-numbers text-xl font-bold text-amber-300">
+                <p className="font-mono-numbers text-xl font-bold text-white">
                   {formatRupiah(selectedTemplate.price)}
                 </p>
-                <p className="text-[11px] text-stone-300 mt-0.5 font-sans-body">
-                  Pembayaran otomatis via QRIS & Virtual Account
+                <p className="text-[11px] text-blue-200 mt-0.5 font-sans-body">
+                  QRIS Otomatis, Manual WA &amp; Virtual Account
                 </p>
               </div>
               <button
                 onClick={() => setActiveTab('checkout')}
-                className="bg-amber-300 text-stone-900 px-5 py-2.5 rounded-lg text-xs font-sans-body font-bold hover:bg-amber-200 transition-colors shadow flex items-center gap-2 whitespace-nowrap"
+                className="bg-[#2563EB] text-white px-5 py-2.5 rounded-lg text-xs font-sans-body font-bold hover:bg-[#1D4ED8] transition-colors shadow flex items-center gap-2 whitespace-nowrap"
               >
                 <span>Checkout Sekarang</span>
                 <ArrowRight className="w-4 h-4" />
@@ -517,13 +517,13 @@ export function LiveStudio() {
           {/* RIGHT COLUMN: Live Interactive Mockup Frame */}
           <div className="lg:col-span-7 flex flex-col items-center">
             {/* Viewport Toggle */}
-            <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg border border-[#E7E2DA] shadow-sm mb-4">
+            <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg border border-[#D4E5F5] shadow-sm mb-4">
               <span className="text-xs text-stone-500 font-sans-body">Simulasi Layar:</span>
               <button
                 onClick={() => setPreviewDevice('mobile')}
                 className={`flex items-center gap-1.5 px-2.5 py-1 rounded text-xs transition-colors ${
                   previewDevice === 'mobile'
-                    ? 'bg-[#2D4030] text-white font-semibold'
+                    ? 'bg-[#2563EB] text-white font-semibold'
                     : 'text-stone-600 hover:text-stone-900'
                 }`}
               >
@@ -534,7 +534,7 @@ export function LiveStudio() {
                 onClick={() => setPreviewDevice('desktop')}
                 className={`flex items-center gap-1.5 px-2.5 py-1 rounded text-xs transition-colors ${
                   previewDevice === 'desktop'
-                    ? 'bg-[#2D4030] text-white font-semibold'
+                    ? 'bg-[#2563EB] text-white font-semibold'
                     : 'text-stone-600 hover:text-stone-900'
                 }`}
               >

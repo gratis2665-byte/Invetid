@@ -1,6 +1,6 @@
-# Serenada — Penambahan Pengaturan Link Demo Web di Panel Admin & Tombol Demo di Katalog
+# Serenada — Redesign Tema Biru Muda & Putih, Autentikasi Multi-Role, Upload Foto Admin, dan Pembayaran Manual QRIS via WhatsApp
 
-Fitur baru untuk memungkinkan administrator mengatur dan memperbarui URL link demo web undangan yang sudah jadi untuk setiap template desain, serta menampilkan tombol "Lihat Demo" secara langsung pada kartu produk di katalog pengguna yang mengarahkan pembeli ke link demo yang telah diatur oleh admin.
+Pembaruan menyeluruh sistem Serenada dengan palet visual baru **Biru Muda & Putih Elegan (*Powder Sky Blue & Crisp White*)**, sistem gerbang **Login & Registrasi dengan pemisahan peran (*Role-Based Access Control*: Admin vs User/Pelanggan)** sebelum masuk ke aplikasi, fitur **Upload Foto langsung dari galeri perangkat HP/laptop** untuk template undangan di Panel Admin, serta integrasi **Pembayaran Manual QRIS dengan pengunggahan bukti bayar dan pengiriman pesan konfirmasi otomatis langsung ke WhatsApp Admin**.
 
 ---
 
@@ -8,19 +8,26 @@ Fitur baru untuk memungkinkan administrator mengatur dan memperbarui URL link de
 
 > [!IMPORTANT]
 > Keputusan dan preferensi pengguna yang telah dikonfirmasi:
-> - **Penempatan Tombol Demo**: Tombol "Lihat Demo" ditampilkan langsung pada setiap kartu katalog produk di samping tombol "Pilih & Edit" dengan tautan langsung (membuka tab baru `target="_blank"` atau pratinjau).
-> - **Area Pengaturan Admin**: Disediakan sub-menu / tab khusus di Panel Admin bernama **"Pengaturan Link Demo"** yang menampilkan daftar seluruh template, input URL demo aktif, tombol "Uji Buka Link", serta tombol simpan cepat. Admin juga dapat memasukkan link demo saat menambah template baru.
-> - **Logika Kondisional Link Kosong**: Jika template belum memiliki link demo khusus dari admin (string kosong atau `undefined`), tombol "Lihat Demo" otomatis **disembunyikan** dari kartu katalog sehingga tampilan tetap rapi tanpa ada tombol rusak/mati.
+> - **Sistem Login & Pemisahan Role**: Gerbang login sebelum masuk web menggunakan form email dan password standar, lengkap dengan tab/modal registrasi akun baru. Terdapat dua role utama:
+>   - **Role User (Calon Pengantin)**: Mengakses Katalog Undangan, Live Studio Kustomisasi Nama, Checkout & Pembayaran, serta Simulasi Undangan Tamu. Menu Admin disembunyikan.
+>   - **Role Admin (Pemilik Bisnis)**: Mengakses penuh Dashboard Admin (Manajemen Pesanan, Tambah & Edit Katalog, Upload Foto, Pengaturan QRIS Manual, Pengaturan Link Demo) serta bebas berpindah ke tampilan pengguna.
+>   - Disediakan kredensial demo cepat (*one-click fill demo*) untuk akun Admin (`admin@serenada.id`) dan akun User (`user@serenada.id`) agar pengujian instan dan mudah.
+> - **Kirim Bukti Pembayaran ke WhatsApp Admin**: Pada opsi pembayaran manual QRIS, pelanggan dapat mengunggah foto bukti transfer/struk bayar, lalu mengklik tombol **"Kirim Bukti Bayar ke WhatsApp Admin"** yang otomatis membuka tautan WhatsApp (`https://wa.me/[NoAdmin]?text=...`) dengan pesan template terstruktur rapi (No Order, Nama Pemesan, Nama Pengantin, Nominal, dan Waktu Bayar). Nomor WA admin dapat diatur fleksibel di Panel Admin.
+> - **Mekanisme Upload Foto di Admin**: Admin dapat mengunggah file foto cover template secara langsung dari penyimpanan HP atau laptop (menggunakan *file reader base64* tersimpan di browser) atau memasukkan URL gambar eksternal, lengkap dengan pratinjau gambar instan.
+> - **Transformasi Tema Warna (Biru Muda & Putih)**: Seluruh rona sage digantikan dengan palet mewah *Serene Powder Blue & Cloud White*: latar belakang biru muda salju (`#F0F7FD` / `#E8F3FC`), kartu putih bersih (`#FFFFFF`), aksen biru laut kerajaan (`#1E3A8A` / `#2563EB`), serta border halus biru es (`#D4E5F5`).
 
 ---
 
 ## 1. Overview & Core Concept
 
-- **What It Does**: Memberi fleksibilitas bagi pemilik bisnis/admin undangan untuk menautkan URL website undangan asli yang sudah diproduksi (misalnya contoh undangan live dari klien terdahulu) ke template katalog terkait. Calon pengantin dapat langsung meninjau hasil jadi undangan sebenarnya sebelum memutuskan untuk melakukan pemesanan dan kustomisasi.
-- **Target Audience**:
-  - *Calon Pengantin*: Mendapatkan kepastian visual atas hasil jadi undangan digital dengan mengklik tombol "Lihat Demo".
-  - *Admin*: Dapat dengan mudah memperbarui atau mengganti link demo kapan saja tanpa perlu mengubah kode sumber.
-- **Key Value**: Meningkatkan kepercayaan dan tingkat konversi calon pengantin melalui pembuktian portofolio nyata (*real live sample*).
+- **What It Does**:
+  1. Menyediakan *Authentication Gate* (Login & Registrasi) sebelum pengunjung dapat mengakses fitur aplikasi, menyaring akses antara Pelanggan (User) dan Pengelola (Admin).
+  2. Mengganti tema visual keseluruhan menjadi biru muda lembut (*baby/powder blue*) berpadu putih bersih yang memberikan kesan suci, tenang, dan modern untuk tema pernikahan.
+  3. Memungkinkan Admin mengunggah file foto template undangan langsung dari galeri lokal perangkat (HP/laptop) dengan live preview sebelum disimpan ke katalog.
+  4. Menyediakan alur pembayaran manual QRIS bagi pelanggan dengan upload bukti pembayaran dan integrasi instan *Direct WhatsApp* ke nomor admin untuk verifikasi cepat.
+- **Target Audience / Persona**:
+  - *Admin/Owner*: Mengatur katalog, foto template, verifikasi pesanan, nomor WhatsApp tujuan bukti bayar, dan link demo.
+  - *Calon Pengantin (User)*: Memilih desain berpenampilan biru muda segar, menyesuaikan nama mempelai, membayar via QRIS otomatis atau QRIS manual dengan konfirmasi ke WhatsApp Admin.
 
 ---
 
@@ -28,37 +35,55 @@ Fitur baru untuk memungkinkan administrator mengatur dan memperbarui URL link de
 
 ### Key User Flows
 
-1. **Alur Admin (Mengatur & Mengubah Link Demo)**:
-   - Admin membuka tab **Admin Manajemen** $\to$ memilih sub-tab baru **"Link Demo Web"**.
-   - Admin melihat daftar seluruh template undangan (foto cover, nama template, kategori).
-   - Di samping tiap template, terdapat input field URL Demo (contoh: `https://undangan-alex-beatrice.serenada.id` atau URL web jadi lainnya).
-   - Admin dapat mengklik tombol **"Tes Buka Link"** untuk memverifikasi apakah URL valid dan aktif.
-   - Admin mengklik tombol **"Simpan Link"**; sistem memunculkan toast konfirmasi dan menyimpan perubahan ke state global serta `localStorage`.
-   - Admin juga dapat mengisi kolom "Link Demo Jadi" saat menambahkan template baru via modal tambah desain.
+1. **Alur Login & Registrasi (Authentication Gate)**:
+   - Pengunjung pertama kali diarahkan ke halaman Login yang elegan bertema biru muda dan putih.
+   - Pilihan: Masuk dengan Email & Password, atau beralih ke tab Registrasi Akun Baru (Nama, Email, Password, Pilihan Peran: Calon Pengantin / Admin Bisnis).
+   - Disediakan tombol jalan pintas demo (*Quick Demo Login*: "Masuk sebagai Admin" & "Masuk sebagai User") untuk kenyamanan uji coba.
+   - Setelah login berhasil, User diarahkan ke Katalog, sedangkan Admin diarahkan langsung ke Dashboard Manajemen (atau Katalog dengan akses penuh ke Admin Panel).
+   - Di navbar pojok kanan atas terdapat info profil pengguna yang aktif beserta tombol Logout.
 
-2. **Alur Calon Pengantin (Menelusuri & Mengakses Demo)**:
-   - Pengunjung membuka halaman **Katalog Desain**.
-   - Pada kartu template yang telah memiliki URL demo, muncul tombol sekunder estetik: **"Lihat Demo"** dengan ikon external link.
-   - Jika admin belum menyetel link demo pada template tertentu, kartu hanya menampilkan tombol utama "Pilih & Edit", menjaga kebersihan antarmuka (*zero broken affordances*).
-   - Saat tombol "Lihat Demo" diklik, web demo langsung terbuka di tab baru secara mulus.
+2. **Alur Upload Foto di Panel Admin**:
+   - Di tab **Kelola Katalog**, tombol "+ Tambah Template Baru" kini menyediakan dua opsi upload gambar cover:
+     - **Tab File Gambar**: Drag-and-drop atau klik untuk memilih file JPG/PNG dari galeri HP/laptop dengan *instant file preview thumbnail*.
+     - **Tab URL**: Opsi manual memasukkan link gambar web.
+   - Begitu file dipilih, sistem membaca data secara lokal dan me-render kartu template baru secara instan di katalog.
 
-### Visual Styling
+3. **Alur Pembayaran Manual QRIS & Kirim Bukti ke WhatsApp Admin**:
+   - Pada halaman Checkout Pembayaran, terdapat opsi **"QRIS Manual & Konfirmasi WA"** di samping QRIS Otomatis dan Virtual Account.
+   - Pelanggan melihat kode QRIS toko, nominal unik pembayaran, dan kotak drop-zone **"Upload Bukti Transfer / Struk"**.
+   - Setelah memilih foto bukti transfer dari perangkat, muncul tombol utama berwarna hijau WhatsApp: **"Kirim Bukti Pembayaran ke WhatsApp Admin"**.
+   - Saat diklik, sistem membuka WhatsApp Web atau aplikasi WA dengan nomor admin yang telah dikonfigurasi (default: `6281234567890`), menyertakan draf pesan otomatis:
+     ```
+     Halo Admin Serenada, saya ingin konfirmasi pembayaran undangan pernikahan:
+     • No. Pesanan: #SRN-84291
+     • Nama Pemesan: Dimas Prasetyo
+     • Mempelai: Dimas & Sarah
+     • Template: Botanical Serenade
+     • Total Bayar: Rp 349.000
+     Mohon diverifikasi pesanan saya. Terima kasih!
+     ```
+   - Di Panel Admin, pesanan ini masuk dengan status `MENUNGGU VERIFIKASI BUKTI BAYAR`, dan admin dapat melihat pratinjau bukti bayar yang diupload serta langsung mengklik "Tandai Lunas".
 
-- Menggunakan tombol beroutline halus (`border border-stone-300 text-stone-700 hover:bg-[#FAF8F5]`) yang serasi dengan tombol primer hijau sage (`bg-[#2D4030] text-white`).
-- Kolom input link di Admin dilengkapi ikon tautan (`Link2`), validasi URL, dan indikator status hijau jika link aktif terisi.
+### Visual Identity & Theme (Biru Muda & Putih)
+
+- **60% Canvas**: Latar belakang bernuansa biru muda lembut dan tenang (`#F0F7FD` & `#EBF4FA`).
+- **30% Structural**: Kartu putih bersih (`#FFFFFF`), border biru es halus (`#D4E5F5`), aksen biru safir berkelas (`#1E3A8A`, `#2563EB`), dan teks slate gelap (`#0F172A`).
+- **10% Accent**: *Baby Blue Soft Highlights* (`#60A5FA` / `#38BDF8`) dan *Emerald Green* untuk tombol konfirmasi WhatsApp.
+- **Typography**: `Playfair Display` untuk judul romantis dan monogram pengantin; `Plus Jakarta Sans` untuk legibilitas antarmuka login dan formulir; `JetBrains Mono` untuk kode order dan harga.
 
 ---
 
 ## 3. Key Product Decisions & Trade-Offs
 
-- **Decision 1: Tab Khusus "Link Demo Web" di Panel Admin**:
-  - *Chosen Approach*: Menyediakan tab terdedikasi di samping "Daftar Pesanan" dan "Kelola Katalog" agar admin dapat meninjau dan mengedit semua link demo secara terpusat dalam satu layar tanpa harus masuk ke modal edit satu per satu.
-  - *Why*: Sangat efisien bagi admin yang mengelola banyak template dan sering memperbarui contoh undangan terbaru.
-- **Decision 2: Hide-if-Empty Conditional Display**:
-  - *Chosen Approach*: Tombol hanya di-render jika `template.demoUrl && template.demoUrl.trim().length > 0`.
-  - *Why*: Sesuai preferensi user, menghindari tombol tanpa aksi (*dead click*) dan menjaga estetika kartu produk.
-- **Decision 3: Default Seed Demo Links**:
-  - *Chosen Approach*: Menyertakan beberapa contoh link demo realistis pada data awal bawaan (seperti rute simulasi undangan atau tautan portofolio) sehingga fitur langsung terlihat dan dapat diuji seketika oleh pengguna.
+- **Decision 1: Client-Side Persistent Role Authentication**:
+  - *Chosen Approach*: Otentikasi berbasis session state tersimpan di `localStorage` dengan akun demo bawaan Admin (`admin@serenada.id`) dan User (`user@serenada.id`), serta form registrasi dinamis.
+  - *Why*: Menghadirkan gerbang login nyata dan pembatasan peran tanpa latensi server atau kegagalan koneksi pihak ketiga, memungkinkan pengujian multi-role secara instan.
+- **Decision 2: Local File Upload via FileReader Base64**:
+  - *Chosen Approach*: Menggunakan API `FileReader.readAsDataURL()` pada browser.
+  - *Why*: Pengguna dapat mengunggah foto apa pun dari galeri smartphone atau laptop tanpa memerlukan server penyimpanan cloud eksternal (S3/Cloudinary), dan foto langsung tampil di katalog dan studio.
+- **Decision 3: WhatsApp Click-to-Chat Integration**:
+  - *Chosen Approach*: URL standard `https://wa.me/{phone}?text={encodedText}` dengan nomor WhatsApp admin yang dapat diedit langsung dari panel admin.
+  - *Why*: Sangat ramah pengguna di Indonesia, membuka aplikasi WhatsApp langsung di smartphone pelanggan atau WhatsApp Web di desktop.
 
 ---
 
@@ -68,63 +93,70 @@ Fitur baru untuk memungkinkan administrator mengatur dan memperbarui URL link de
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                       Serenada Demo Link Architecture                       │
+│                       Serenada Multi-Role System Architecture               │
 └─────────────────────────────────────────────────────────────────────────────┘
                                        │
-        ┌──────────────────────────────┴──────────────────────────────┐
-        ▼                                                             ▼
-┌──────────────────────────────────────────┐    ┌──────────────────────────────────────────┐
-│             Admin Dashboard              │    │          Catalog Product Card            │
-│  • Tab Baru: "Link Demo Web"             │    │  • Check: has demoUrl?                   │
-│  • URL Input per template                │    │    ├── Yes: Render "Lihat Demo" Button   │
-│  • Quick "Tes Buka Link" button          │    │    └── No:  Hidden cleanly               │
-│  • Modal Tambah: Field "URL Demo"        │    │  • Action: window.open(demoUrl, '_blank')│
-└──────────────────────────────────────────┘    └──────────────────────────────────────────┘
-                    │                                         │
-                    └─────────────────────┬───────────────────┘
-                                          ▼
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                 Shared State Layer (AppStorage / Context)                   │
-│  • WeddingTemplate.demoUrl?: string                                         │
-│  • updateTemplateDemoUrl(templateId: string, url: string)                   │
-│  • LocalStorage sync & reactive state propagation                           │
-└─────────────────────────────────────────────────────────────────────────────┘
+            ┌──────────────────────────┴──────────────────────────┐
+            ▼                                                     ▼
+┌───────────────────────────────────────┐   ┌───────────────────────────────────────┐
+│           Auth Gate (Login)           │   │             Session Store             │
+│  • Email & Password Form              │──▶│  • currentUser: User | null           │
+│  • Register New Account               │   │  • role: 'admin' | 'user'             │
+│  • Quick One-Click Demo Logins        │   │  • isAuthenticated: boolean           │
+└───────────────────────────────────────┘   └───────────────────────────────────────┘
+                                       │
+            ┌──────────────────────────┴──────────────────────────┐
+            ▼ (If Role === 'user')                                ▼ (If Role === 'admin')
+┌───────────────────────────────────────┐   ┌───────────────────────────────────────┐
+│            User Experience            │   │            Admin Experience           │
+│  • New Soft Baby Blue & White Theme   │   │  • Full Admin Dashboard & Analytics   │
+│  • Catalog & Live Studio Customizer   │   │  • Upload Foto Template dari Perangkat│
+│  • QRIS Manual & Kirim Bukti ke WA    │   │  • Kelola Nomor WhatsApp Admin        │
+│  • Live Guest Invitation Simulation   │   │  • Verifikasi Bukti Pembayaran Manual │
+│  • Hidden Admin Access                │   │  • Switch to User View Seamlessly     │
+└───────────────────────────────────────┘   └───────────────────────────────────────┘
 ```
 
 ### Data Model Updates
 
 ```typescript
 // types/index.ts
-export interface WeddingTemplate {
+export type UserRole = 'admin' | 'user';
+
+export interface UserAccount {
   id: string;
   name: string;
-  category: TemplateCategory;
-  price: number;
-  originalPrice: number;
-  coverImage: string;
-  description: string;
-  badge?: string;
-  demoUrl?: string; // <-- URL Web Undangan yang sudah jadi
-  palette: {
-    primary: string;
-    secondary: string;
-    background: string;
-    card: string;
-    accent: string;
-  };
-  features: string[];
-  isActive: boolean;
-  salesCount: number;
+  email: string;
+  role: UserRole;
+  phone?: string;
+}
+
+export type PaymentMethodType = 'qris' | 'qris_manual' | 'va_bca' | 'va_mandiri' | 'va_bri' | 'va_bni';
+
+export interface Order {
+  // ... existing fields
+  paymentProofImage?: string; // Base64 / URL bukti transfer manual
+  waConfirmationSent?: boolean;
 }
 ```
 
-### Component Modifications Plan
+### Step-by-Step Implementation Sequence
 
-1. **`types/index.ts`**: Menambahkan properti opsional `demoUrl?: string` ke interface `WeddingTemplate`.
-2. **`data/initialData.ts`**: Menyematkan contoh `demoUrl` realistis pada template bawaan.
-3. **`context/AppContext.tsx`**: Menambahkan handler `updateTemplateDemoUrl(templateId: string, demoUrl: string)`.
-4. **`components/CatalogSection.tsx`**: Menambahkan tombol "Lihat Demo" pada kartu template jika `template.demoUrl` terisi.
-5. **`components/AdminDashboard.tsx`**:
-   - Menambahkan sub-tab ke-3: **"Link Demo Web"** berisi tabel manajemen link demo untuk semua template, input URL, tombol uji link, dan tombol simpan.
-   - Menambahkan field input "URL Demo Jadi" pada modal tambah template baru.
-6. **Verifikasi**: Jalankan `compile_applet` dan `lint_applet` untuk memastikan tidak ada regresi build.
+1. **`types/index.ts`**: Menambahkan interface `UserAccount`, `UserRole`, dan opsi pembayaran `qris_manual` serta `paymentProofImage`.
+2. **`context/AppContext.tsx`**:
+   - Menambahkan state `currentUser`, `loginUser`, `registerUser`, `logoutUser`, `adminWhatsAppNumber`, `updateAdminWhatsApp`.
+   - Menambahkan akun bawaan admin (`admin@serenada.id`) dan user (`user@serenada.id`).
+3. **`components/AuthGate.tsx`**:
+   - Tampilan login & registrasi bertema biru muda & putih lembut dengan tombol uji coba cepat (*Quick Demo Login*).
+4. **`components/Navbar.tsx`**:
+   - Restyle warna ke biru muda & putih; kondisional menyembunyikan menu "Admin Manajemen" jika role adalah `user`; menambahkan info avatar & tombol Logout.
+5. **`components/CatalogSection.tsx` & `components/HeroSection.tsx`**:
+   - Restyle warna dari hijau sage ke biru muda lembut (`#F0F7FD`, `#1E3A8A`, `#2563EB`, `#FFFFFF`).
+6. **`components/PaymentCheckout.tsx`**:
+   - Restyle tema ke biru muda & putih.
+   - Menambahkan metode **"QRIS Manual & Konfirmasi WA"**: upload gambar bukti struk dan tombol `Kirim Bukti Pembayaran ke WhatsApp Admin`.
+7. **`components/AdminDashboard.tsx`**:
+   - Fitur **Upload Foto** langsung dari galeri HP/laptop (file input dengan FileReader) pada form penambahan template baru.
+   - Pengaturan nomor WhatsApp Admin tujuan pengiriman bukti transfer.
+   - Tinjauan foto bukti transfer pada modal detail pesanan.
+8. **Verifikasi**: Uji build dengan `lint_applet` dan `compile_applet`.

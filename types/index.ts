@@ -1,3 +1,13 @@
+export type UserRole = 'admin' | 'user';
+
+export interface UserAccount {
+  id: string;
+  name: string;
+  email: string;
+  role: UserRole;
+  phone?: string;
+}
+
 export type TemplateCategory = 'Botanical' | 'Monogram' | 'Minimalist' | 'Traditional' | 'Floral' | 'Modern';
 
 export interface WeddingTemplate {
@@ -40,7 +50,7 @@ export interface CustomizationData {
   selectedColorTone: string;
 }
 
-export type PaymentMethodType = 'qris' | 'va_bca' | 'va_mandiri' | 'va_bri' | 'va_bni';
+export type PaymentMethodType = 'qris' | 'qris_manual' | 'va_bca' | 'va_mandiri' | 'va_bri' | 'va_bni';
 
 export type OrderStatus = 'PENDING_PAYMENT' | 'PAID' | 'IN_PROCESSING' | 'COMPLETED' | 'CANCELLED';
 
@@ -59,6 +69,8 @@ export interface Order {
   paidAt?: string;
   invitationSlug: string;
   notes?: string;
+  paymentProofImage?: string;
+  waConfirmationSent?: boolean;
 }
 
 export interface GuestRSVP {

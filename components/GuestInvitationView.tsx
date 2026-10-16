@@ -61,27 +61,27 @@ export function GuestInvitationView() {
       style={{ backgroundColor: selectedTemplate.palette.background }}
     >
       {/* Top Floating Simulator Navigation Bar */}
-      <div className="sticky top-0 z-50 bg-[#1F2923]/90 backdrop-blur-md text-white py-2.5 px-6 border-b border-white/10 flex items-center justify-between text-xs">
+      <div className="sticky top-0 z-50 bg-[#1E3A8A]/95 backdrop-blur-md text-white py-2.5 px-6 border-b border-sky-400/20 flex items-center justify-between text-xs shadow-md">
         <div className="flex items-center gap-3">
           <button
             onClick={() => setActiveTab('studio')}
-            className="flex items-center gap-1.5 text-stone-300 hover:text-white transition-colors"
+            className="flex items-center gap-1.5 text-sky-200 hover:text-white transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Kembali ke Studio</span>
           </button>
-          <span className="text-stone-500">|</span>
-          <span className="text-amber-300 font-sans-body">
+          <span className="text-sky-400/50">|</span>
+          <span className="text-sky-200 font-sans-body">
             Pratinjau Undangan Tamu: {customization.groomNickname} &amp; {customization.brideNickname}
           </span>
         </div>
 
         <div className="flex items-center gap-2">
           <button
-            onClick={() => setActiveTab('admin')}
+            onClick={() => setActiveTab('catalog')}
             className="bg-white/10 hover:bg-white/20 text-white px-3 py-1 rounded text-xs transition-colors"
           >
-            Panel Admin
+            Katalog
           </button>
         </div>
       </div>

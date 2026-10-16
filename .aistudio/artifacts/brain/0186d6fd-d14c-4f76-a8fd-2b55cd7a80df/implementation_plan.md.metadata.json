@@ -1,6 +1,6 @@
 {
-  "summary": "Rencana penambahan fitur pengaturan link demo web yang sudah jadi di Panel Admin, tab khusus pengelolaan link demo, dan tombol 'Lihat Demo' kondisional pada setiap kartu katalog produk.",
-  "updatedAt": "2026-10-16T13:24:21.030263954Z",
+  "summary": "Rencana pembaruan antarmuka dengan tema Biru Muda dan Putih, sistem Login & Registrasi dengan pemisahan Role Admin vs User, fitur Upload Foto lokal dari perangkat di Panel Admin, serta Pembayaran Manual QRIS dengan pengiriman bukti transfer langsung ke WhatsApp Admin.",
+  "updatedAt": "2026-10-16T13:49:03.285484036Z",
   "requestFeedback": true,
   "userFacing": true
 }

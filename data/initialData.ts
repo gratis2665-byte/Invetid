@@ -139,7 +139,7 @@ export const DEFAULT_CUSTOMIZATION: CustomizationData = {
   venueAddress: 'Senayan Park Mall Lantai 4, Jl. Gerbang Pemuda No.3, Gelora, Tanah Abang',
   loveQuote: '"Dua jiwa menjadi satu, melangkah beriringan dalam jalinan kasih, doa restu, dan janji suci selamanya."',
   musicTitle: 'Canon in D (Violin & Piano Romantic Serenade)',
-  selectedColorTone: '#3F5643',
+  selectedColorTone: '#2563EB',
 };
 
 export const INITIAL_ORDERS: Order[] = [
@@ -235,5 +235,28 @@ export const INITIAL_ORDERS: Order[] = [
     paidAt: '2026-10-12T14:12:35Z',
     invitationSlug: 'adit-sekar',
     notes: 'Undangan digital sudah selesai dan disebarkan ke tamu.',
+  },
+  {
+    id: 'SRN-98425',
+    customerName: 'Bagas Wicaksono',
+    customerPhone: '081288776655',
+    customerEmail: 'bagas.wicaksono@gmail.com',
+    template: INITIAL_TEMPLATES[0],
+    customization: {
+      ...DEFAULT_CUSTOMIZATION,
+      groomName: 'Bagas Wicaksono, S.Kom.',
+      groomNickname: 'Bagas',
+      brideName: 'Tiara Indah Lestari, S.Psi.',
+      brideNickname: 'Tiara',
+      weddingDate: '2026-11-20',
+      venueName: 'Hotel Mulia Senayan Jakarta',
+    },
+    amount: 349000,
+    paymentMethod: 'qris_manual',
+    status: 'IN_PROCESSING',
+    createdAt: '2026-10-16T06:30:00Z',
+    invitationSlug: 'bagas-tiara',
+    notes: 'Pelanggan telah upload struk transfer QRIS dan konfirmasi via WhatsApp.',
+    paymentProofImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBTwXegarqGKgGtLCK1UqzfYrC5c9E2u54AGpruQL0ksCJjmIgpTimLXb6lQ5J_qitVLcqny6_mNUpeJxaAw5jf3fKqtLqhww__kYtzh0PldmtdC8Ik448pNWI62rxxnJ2XEg9Fd6cO3C-n8NqW8PKCaeL3_Yjdy0fGgoPEdiGInIvIrbKTb0P3C1fZ87NhwCus5gE-Hg6Gu_iAX9fEURGnJRlX1fzWyl-LIQ4P1tX3nTwg9WO-8_8',
   },
 ];

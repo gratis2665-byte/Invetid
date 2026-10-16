@@ -8,6 +8,8 @@ import {
   PaymentMethodType,
   OrderStatus,
   GuestRSVP,
+  UserAccount,
+  UserRole,
 } from '@/types';
 import {
   INITIAL_TEMPLATES,
@@ -15,7 +17,28 @@ import {
   INITIAL_ORDERS,
 } from '@/data/initialData';
 
+export const DEFAULT_ADMIN_WA = '6281234567890';
+
+export const INITIAL_ACCOUNTS: UserAccount[] = [
+  {
+    id: 'user-admin',
+    name: 'Administrator Serenada',
+    email: 'admin@serenada.id',
+    role: 'admin',
+    phone: '081234567890',
+  },
+  {
+    id: 'user-client',
+    name: 'Dimas Prasetyo (Calon Pengantin)',
+    email: 'user@serenada.id',
+    role: 'user',
+    phone: '081298765432',
+  },
+];
+
 interface AppContextType {
+  currentUser: UserAccount | null;
+  adminWhatsApp: string;
   templates: WeddingTemplate[];
   orders: Order[];
   selectedTemplate: WeddingTemplate;
@@ -25,6 +48,11 @@ interface AppContextType {
   guestRSVPs: GuestRSVP[];
   toast: { message: string; type?: 'success' | 'info' | 'warning' } | null;
   setActiveTab: (tab: 'catalog' | 'studio' | 'checkout' | 'admin' | 'guest_preview') => void;
+  login: (email: string, password?: string) => boolean;
+  register: (name: string, email: string, password?: string, role?: UserRole) => boolean;
+  logout: () => void;
+  quickLoginDemo: (role: UserRole) => void;
+  updateAdminWhatsApp: (phone: string) => void;
   selectTemplateForCustomizing: (template: WeddingTemplate) => void;
   updateCustomization: (patch: Partial<CustomizationData>) => void;
   createOrderFromDraft: (customer: {
@@ -32,7 +60,9 @@ interface AppContextType {
     phone: string;
     email: string;
     paymentMethod: PaymentMethodType;
+    paymentProofImage?: string;
   }) => Order;
+  submitPaymentProof: (orderId: string, proofImage: string) => void;
   simulatePaymentSuccess: (orderId: string) => void;
   updateOrderStatus: (orderId: string, status: OrderStatus) => void;
   deleteOrder: (orderId: string) => void;
@@ -50,6 +80,43 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
+  // Current logged in user (null = not logged in, shows AuthGate)
+  const [currentUser, setCurrentUser] = useState<UserAccount | null>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('serenada_current_user');
+        if (saved) return JSON.parse(saved);
+      } catch {
+        // storage disabled
+      }
+    }
+    return null;
+  });
+
+  const [adminWhatsApp, setAdminWhatsApp] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('serenada_admin_wa');
+        if (saved) return saved;
+      } catch {
+        // storage disabled
+      }
+    }
+    return DEFAULT_ADMIN_WA;
+  });
+
+  const [registeredAccounts, setRegisteredAccounts] = useState<UserAccount[]>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('serenada_users');
+        if (saved) return JSON.parse(saved);
+      } catch {
+        // storage disabled
+      }
+    }
+    return INITIAL_ACCOUNTS;
+  });
+
   const [templates, setTemplates] = useState<WeddingTemplate[]>(() => {
     if (typeof window !== 'undefined') {
       try {
@@ -119,29 +186,45 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     },
   ]);
 
-  // Sync state changes to localStorage
+  // Sync to localStorage
+  useEffect(() => {
+    try {
+      if (currentUser) {
+        localStorage.setItem('serenada_current_user', JSON.stringify(currentUser));
+      } else {
+        localStorage.removeItem('serenada_current_user');
+      }
+    } catch {}
+  }, [currentUser]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('serenada_admin_wa', adminWhatsApp);
+    } catch {}
+  }, [adminWhatsApp]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('serenada_users', JSON.stringify(registeredAccounts));
+    } catch {}
+  }, [registeredAccounts]);
+
   useEffect(() => {
     try {
       localStorage.setItem('serenada_templates', JSON.stringify(templates));
-    } catch {
-      // storage quota
-    }
+    } catch {}
   }, [templates]);
 
   useEffect(() => {
     try {
       localStorage.setItem('serenada_orders', JSON.stringify(orders));
-    } catch {
-      // storage quota
-    }
+    } catch {}
   }, [orders]);
 
   useEffect(() => {
     try {
       localStorage.setItem('serenada_customization', JSON.stringify(customization));
-    } catch {
-      // storage quota
-    }
+    } catch {}
   }, [customization]);
 
   const showToast = (message: string, type: 'success' | 'info' | 'warning' = 'success') => {
@@ -149,6 +232,76 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setTimeout(() => {
       setToast(null);
     }, 3500);
+  };
+
+  const login = (email: string, _password?: string): boolean => {
+    const trimmed = email.trim().toLowerCase();
+    const found = registeredAccounts.find((a) => a.email.toLowerCase() === trimmed);
+    if (found) {
+      setCurrentUser(found);
+      setActiveTab(found.role === 'admin' ? 'admin' : 'catalog');
+      showToast(`Selamat datang kembali, ${found.name}!`, 'success');
+      return true;
+    }
+    // Auto-login fallback if user typed any email
+    const fallbackRole: UserRole = trimmed.includes('admin') ? 'admin' : 'user';
+    const newAcct: UserAccount = {
+      id: `user-${Date.now()}`,
+      name: trimmed.split('@')[0],
+      email: trimmed,
+      role: fallbackRole,
+    };
+    setRegisteredAccounts((prev) => [...prev, newAcct]);
+    setCurrentUser(newAcct);
+    setActiveTab(fallbackRole === 'admin' ? 'admin' : 'catalog');
+    showToast(`Berhasil masuk sebagai ${fallbackRole === 'admin' ? 'Admin' : 'Pengguna'}!`, 'success');
+    return true;
+  };
+
+  const register = (name: string, email: string, _password?: string, role: UserRole = 'user'): boolean => {
+    const trimmed = email.trim().toLowerCase();
+    const existing = registeredAccounts.find((a) => a.email.toLowerCase() === trimmed);
+    if (existing) {
+      showToast('Email sudah terdaftar. Silakan login.', 'warning');
+      return false;
+    }
+    const newAcct: UserAccount = {
+      id: `user-${Date.now()}`,
+      name: name.trim() || 'Calon Pengantin',
+      email: trimmed,
+      role,
+    };
+    setRegisteredAccounts((prev) => [...prev, newAcct]);
+    setCurrentUser(newAcct);
+    setActiveTab(role === 'admin' ? 'admin' : 'catalog');
+    showToast(`Registrasi akun berhasil! Selamat datang, ${newAcct.name}.`, 'success');
+    return true;
+  };
+
+  const logout = () => {
+    setCurrentUser(null);
+    setActiveTab('catalog');
+    showToast('Anda telah berhasil keluar (logout).', 'info');
+  };
+
+  const quickLoginDemo = (role: UserRole) => {
+    if (role === 'admin') {
+      const adminAcct = registeredAccounts.find((a) => a.role === 'admin') || INITIAL_ACCOUNTS[0];
+      setCurrentUser(adminAcct);
+      setActiveTab('admin');
+      showToast('Masuk sebagai Admin Bisnis Serenada', 'success');
+    } else {
+      const userAcct = registeredAccounts.find((a) => a.role === 'user') || INITIAL_ACCOUNTS[1];
+      setCurrentUser(userAcct);
+      setActiveTab('catalog');
+      showToast('Masuk sebagai Calon Pengantin (User)', 'success');
+    }
+  };
+
+  const updateAdminWhatsApp = (phone: string) => {
+    const cleanPhone = phone.replace(/[^0-9]/g, '');
+    setAdminWhatsApp(cleanPhone || DEFAULT_ADMIN_WA);
+    showToast('Nomor WhatsApp Admin berhasil diperbarui!', 'success');
   };
 
   const selectTemplateForCustomizing = (template: WeddingTemplate) => {
@@ -170,6 +323,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     phone: string;
     email: string;
     paymentMethod: PaymentMethodType;
+    paymentProofImage?: string;
   }): Order => {
     const randomNum = Math.floor(10000 + Math.random() * 90000);
     const newId = `SRN-${randomNum}`;
@@ -194,17 +348,36 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       amount: selectedTemplate.price,
       paymentMethod: customer.paymentMethod,
       vaNumber: vaNum,
-      status: 'PENDING_PAYMENT',
+      status: customer.paymentMethod === 'qris_manual' && customer.paymentProofImage ? 'IN_PROCESSING' : 'PENDING_PAYMENT',
       createdAt: new Date().toISOString(),
       invitationSlug: slug,
+      paymentProofImage: customer.paymentProofImage,
     };
 
     const updated = [newOrder, ...orders];
     setOrders(updated);
     setCurrentPaymentOrder(newOrder);
     setActiveTab('checkout');
-    showToast(`Pesanan #${newId} berhasil dibuat! Silakan selesaikan pembayaran.`, 'info');
+    showToast(`Pesanan #${newId} berhasil dibuat!`, 'info');
     return newOrder;
+  };
+
+  const submitPaymentProof = (orderId: string, proofImage: string) => {
+    setOrders((prev) =>
+      prev.map((o) =>
+        o.id === orderId
+          ? { ...o, paymentProofImage: proofImage, status: 'IN_PROCESSING' }
+          : o
+      )
+    );
+    if (currentPaymentOrder && currentPaymentOrder.id === orderId) {
+      setCurrentPaymentOrder((prev) =>
+        prev
+          ? { ...prev, paymentProofImage: proofImage, status: 'IN_PROCESSING' }
+          : null
+      );
+    }
+    showToast('Bukti transfer berhasil diunggah! Siap dikirim ke WhatsApp Admin.', 'success');
   };
 
   const simulatePaymentSuccess = (orderId: string) => {
@@ -217,7 +390,6 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         prev ? { ...prev, status: 'PAID', paidAt: now } : null
       );
     }
-    // Also increase template sales count
     const targetOrder = orders.find((o) => o.id === orderId);
     if (targetOrder) {
       setTemplates((prev) =>
@@ -296,15 +468,20 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setOrders(INITIAL_ORDERS);
     setCustomization(DEFAULT_CUSTOMIZATION);
     setSelectedTemplate(INITIAL_TEMPLATES[0]);
+    setAdminWhatsApp(DEFAULT_ADMIN_WA);
+    setRegisteredAccounts(INITIAL_ACCOUNTS);
     localStorage.removeItem('serenada_templates');
     localStorage.removeItem('serenada_orders');
     localStorage.removeItem('serenada_customization');
+    localStorage.removeItem('serenada_admin_wa');
     showToast('Seluruh data berhasil di-reset ke data bawaan awal', 'info');
   };
 
   return (
     <AppContext.Provider
       value={{
+        currentUser,
+        adminWhatsApp,
         templates,
         orders,
         selectedTemplate,
@@ -314,9 +491,15 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         guestRSVPs,
         toast,
         setActiveTab,
+        login,
+        register,
+        logout,
+        quickLoginDemo,
+        updateAdminWhatsApp,
         selectTemplateForCustomizing,
         updateCustomization,
         createOrderFromDraft,
+        submitPaymentProof,
         simulatePaymentSuccess,
         updateOrderStatus,
         deleteOrder,

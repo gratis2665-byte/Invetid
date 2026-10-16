@@ -24,7 +24,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
     <html lang="id" className="scroll-smooth">
       <body
         suppressHydrationWarning
-        className="min-h-screen bg-[#FAF8F5] text-[#1E2923] antialiased selection:bg-[#E2D8C6] selection:text-[#2D4030]"
+        className="min-h-screen bg-[#F0F7FD] text-[#0F172A] antialiased selection:bg-[#BFDBFE] selection:text-[#1E3A8A]"
       >
         {children}
       </body>

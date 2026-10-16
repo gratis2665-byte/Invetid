@@ -33,12 +33,12 @@ export function CatalogSection() {
   return (
     <section id="catalog-section" className="w-full py-16 px-6 max-w-7xl mx-auto">
       {/* Header and Filter Controls */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 pb-6 border-b border-[#E7E2DA]">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 pb-6 border-b border-[#D4E5F5]">
         <div>
-          <div className="text-xs font-sans-body uppercase tracking-widest text-[#8C7A58] font-semibold mb-1">
+          <div className="text-xs font-sans-body uppercase tracking-widest text-[#2563EB] font-semibold mb-1">
             Koleksi Undangan Digital
           </div>
-          <h2 className="text-2xl sm:text-3xl font-serif-display text-[#1E2923]">
+          <h2 className="text-2xl sm:text-3xl font-serif-display text-[#0F172A]">
             Pilih Desain Sesuai Tema Pernikahan Anda
           </h2>
           <p className="text-sm font-sans-body text-stone-600 mt-1 max-w-xl">
@@ -55,7 +55,7 @@ export function CatalogSection() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Cari tema, warna, atau gaya..."
-            className="w-full pl-9 pr-3 py-2 text-sm bg-white border border-[#DCD5C9] rounded-lg focus:outline-none focus:border-[#2D4030] transition-colors"
+            className="w-full pl-9 pr-3 py-2 text-sm bg-white border border-[#D4E5F5] rounded-lg focus:outline-none focus:border-[#2563EB] transition-colors"
           />
         </div>
       </div>
@@ -68,8 +68,8 @@ export function CatalogSection() {
             onClick={() => setSelectedCategory(cat)}
             className={`px-4 py-2 text-xs font-sans-body font-medium rounded-lg transition-all whitespace-nowrap shrink-0 ${
               selectedCategory === cat
-                ? 'bg-[#2D4030] text-white shadow-sm font-semibold'
-                : 'bg-[#F2ECE1] text-stone-700 hover:bg-[#EAE2D4]'
+                ? 'bg-[#2563EB] text-white shadow-sm font-semibold'
+                : 'bg-white text-stone-700 hover:bg-stone-50 border border-[#D4E5F5]'
             }`}
           >
             {cat === 'All' ? 'Semua Desain' : cat}
@@ -79,7 +79,7 @@ export function CatalogSection() {
 
       {/* Product Grid */}
       {filteredTemplates.length === 0 ? (
-        <div className="text-center py-16 bg-white rounded-xl border border-dashed border-[#DCD5C9] p-8">
+        <div className="text-center py-16 bg-white rounded-xl border border-dashed border-[#D4E5F5] p-8">
           <p className="text-base font-serif-display text-stone-800">
             Tidak ada desain undangan yang cocok dengan pencarian Anda.
           </p>
@@ -89,7 +89,7 @@ export function CatalogSection() {
               setSelectedCategory('All');
               setSearchQuery('');
             }}
-            className="mt-4 px-4 py-2 text-xs bg-[#2D4030] text-white rounded-lg hover:bg-[#3F5643]"
+            className="mt-4 px-4 py-2 text-xs bg-[#2563EB] text-white rounded-lg hover:bg-[#1D4ED8]"
           >
             Reset Filter
           </button>
@@ -99,11 +99,11 @@ export function CatalogSection() {
           {filteredTemplates.map((template) => (
             <div
               key={template.id}
-              className="group bg-white rounded-xl overflow-hidden border border-[#E7E2DA] hover:border-[#C4B79B] transition-all duration-300 shadow-sm hover:shadow-md flex flex-col justify-between"
+              className="group bg-white rounded-xl overflow-hidden border border-[#D4E5F5] hover:border-[#93C5FD] transition-all duration-300 shadow-sm hover:shadow-md flex flex-col justify-between"
             >
               {/* Product Visual Card with Resilient Fallback */}
               <div>
-                <div className="relative aspect-[4/3] bg-[#F7F4EE] overflow-hidden">
+                <div className="relative aspect-[4/3] bg-[#EFF6FF] overflow-hidden">
                   <img
                     src={template.coverImage}
                     alt={template.name}
@@ -131,7 +131,7 @@ export function CatalogSection() {
 
                   {/* Clean unboxed tag in corner */}
                   {template.badge && (
-                    <span className="absolute top-3 left-3 bg-[#1F2923]/90 text-white text-[11px] font-sans-body font-medium px-2.5 py-1 rounded backdrop-blur-sm">
+                    <span className="absolute top-3 left-3 bg-[#1E3A8A]/90 text-white text-[11px] font-sans-body font-medium px-2.5 py-1 rounded backdrop-blur-sm">
                       {template.badge}
                     </span>
                   )}
@@ -141,14 +141,14 @@ export function CatalogSection() {
                 <div className="p-5">
                   {/* Clean unboxed metadata with bullet separators */}
                   <div className="flex items-center gap-2 text-xs text-stone-500 mb-1.5 font-sans-body">
-                    <span className="font-medium text-[#8C7A58]">{template.category}</span>
+                    <span className="font-medium text-[#2563EB]">{template.category}</span>
                     <span aria-hidden="true">·</span>
                     <span className="font-mono-numbers">{template.salesCount} Terjual</span>
                     <span aria-hidden="true">·</span>
                     <span>Aktif Selamanya</span>
                   </div>
 
-                  <h3 className="font-serif-display text-lg text-[#1E2923] group-hover:text-[#2D4030] transition-colors">
+                  <h3 className="font-serif-display text-lg text-[#0F172A] group-hover:text-[#2563EB] transition-colors">
                     {template.name}
                   </h3>
 
@@ -157,10 +157,10 @@ export function CatalogSection() {
                   </p>
 
                   {/* Highlights list */}
-                  <ul className="mt-3 space-y-1 text-xs text-stone-600 border-t border-[#F2ECE1] pt-3">
+                  <ul className="mt-3 space-y-1 text-xs text-stone-600 border-t border-[#F0F7FD] pt-3">
                     {template.features.slice(0, 3).map((feat, idx) => (
                       <li key={idx} className="flex items-center gap-1.5">
-                        <Check className="w-3.5 h-3.5 text-[#3F5643] shrink-0" />
+                        <Check className="w-3.5 h-3.5 text-[#2563EB] shrink-0" />
                         <span className="truncate">{feat}</span>
                       </li>
                     ))}
@@ -169,13 +169,13 @@ export function CatalogSection() {
               </div>
 
               {/* Price & Action Module */}
-              <div className="px-5 pb-5 pt-2 flex items-center justify-between border-t border-[#F2ECE1]">
+              <div className="px-5 pb-5 pt-2 flex items-center justify-between border-t border-[#F0F7FD]">
                 <div>
                   <span className="text-[11px] uppercase tracking-wider text-stone-400 font-sans-body">
                     Investasi
                   </span>
                   <div className="flex items-baseline gap-2">
-                    <span className="font-mono-numbers text-base font-bold text-[#2D4030]">
+                    <span className="font-mono-numbers text-base font-bold text-[#1E3A8A]">
                       {formatRupiah(template.price)}
                     </span>
                     {template.originalPrice > template.price && (
@@ -187,25 +187,26 @@ export function CatalogSection() {
                 </div>
 
                 <div className="flex items-center gap-2">
+                  {/* Kondisional: Tombol Lihat Demo (jika demoUrl ada dan tidak kosong) */}
                   {template.demoUrl && template.demoUrl.trim().length > 0 && (
                     <a
                       href={template.demoUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-white border border-[#DCD5C9] text-stone-700 hover:text-stone-900 hover:border-[#2D4030] hover:bg-[#FAF8F5] px-3 py-2 rounded-lg text-xs font-sans-body font-medium transition-colors flex items-center gap-1.5 shadow-xs whitespace-nowrap"
+                      className="bg-white border border-[#D4E5F5] text-stone-700 hover:text-[#2563EB] hover:border-[#2563EB] hover:bg-[#F0F7FD] px-3 py-2 rounded-lg text-xs font-sans-body font-medium transition-colors flex items-center gap-1.5 shadow-xs whitespace-nowrap"
                       title={`Buka Demo Jadi: ${template.name}`}
                     >
-                      <ExternalLink className="w-3.5 h-3.5 text-[#8C7A58]" />
+                      <ExternalLink className="w-3.5 h-3.5 text-[#3B82F6]" />
                       <span>Lihat Demo</span>
                     </a>
                   )}
 
                   <button
                     onClick={() => selectTemplateForCustomizing(template)}
-                    className="bg-[#2D4030] text-white px-3.5 py-2 rounded-lg text-xs font-sans-body font-semibold hover:bg-[#3F5643] transition-colors flex items-center gap-1.5 shadow-sm whitespace-nowrap"
+                    className="bg-[#2563EB] text-white px-3.5 py-2 rounded-lg text-xs font-sans-body font-semibold hover:bg-[#1D4ED8] transition-colors flex items-center gap-1.5 shadow-sm whitespace-nowrap"
                   >
-                    <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-                    <span>Pilih & Edit</span>
+                    <Sparkles className="w-3.5 h-3.5 text-sky-200" />
+                    <span>Pilih &amp; Edit</span>
                   </button>
                 </div>
               </div>
